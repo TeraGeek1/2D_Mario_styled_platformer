@@ -1,6 +1,5 @@
-import pygame
+import pygame, sys
 from settings import *
-import sys
 
 pygame.init()
 

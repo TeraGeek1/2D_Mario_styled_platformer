@@ -1,5 +1,6 @@
 import pygame, sys
 from settings import *
+from tiles import Tile
 
 pygame.init()
 
@@ -17,7 +18,7 @@ while True:
             
     
     screen.fill('Black')
-    
+
     
     pygame.display.update()
     clock.tick(60)

@@ -1,24 +1,5 @@
-import pygame, sys
-from settings import *
-from tiles import Tile
+import game as gm
 
-pygame.init()
-
-
-screen = pygame.display.set_mode((screen_width, screen_height))
-clock = pygame.time.Clock()
-
-
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-            
-    
-    screen.fill('Black')
-
-    
-    pygame.display.update()
-    clock.tick(60)
+if __name__ == '__main__':
+    game = gm.Game()
+    game.run()

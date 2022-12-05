@@ -17,8 +17,9 @@ level_map = [
 '    XXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
 
-tile_size = 64
-screen_width = 1200
+screen_width = 800
+tile_size = int(screen_width / 18.75)
 screen_height = len(level_map) * tile_size
 
+print(screen_width, screen_height)
 screen = pygame.display.set_mode((screen_width, screen_height))

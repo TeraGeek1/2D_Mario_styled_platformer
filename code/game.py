@@ -7,7 +7,7 @@ class Game:
 
     def __init__(self) -> None:
         pygame.init()
-        self.level = Level(level_map, screen)
+        self.level = Level(level_map)
 
 
     def run(self):
@@ -18,7 +18,8 @@ class Game:
                     pygame.quit()
                     sys.exit()
                                 
-            
+            self.level.draw(screen)
+            self.level.update()
 
             
             pygame.display.update()

@@ -1,6 +1,9 @@
-import pygame, sys
+import pygame, sys, os
+sys.path.append(os.path.join(sys.path[0], 'world'))
+sys.path.append(os.path.join(sys.path[0], 'player'))
 from settings import *
-from world.level import Level
+from level import Level
+from player import Player
 
 
 class Game:
@@ -19,8 +22,7 @@ class Game:
                     sys.exit()
                                 
             self.level.draw(screen)
-            self.level.update()
 
-            
+
             pygame.display.update()
             clock.tick(60)

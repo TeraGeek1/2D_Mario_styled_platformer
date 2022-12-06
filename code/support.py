@@ -1,12 +1,13 @@
-import pygame
 from os import walk
-pygame.init()
+from settings import screen
+import pygame
 
-
-def import_folder(path: str):
+def import_folder(path):
     surface_list = []
     for _,__,img_files in walk(path):
-        for img in img_files:
-            surface_list.append(pygame.image.load(f"{path}/{img}").convert_alpha())
+        for image in img_files:
+            full_path = path + '/' + image
+            image_surf = pygame.image.load(full_path).convert_alpha()
+            surface_list.append(image_surf)
+
     return surface_list
-        

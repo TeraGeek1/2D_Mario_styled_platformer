@@ -3,6 +3,7 @@ from settings import screen
 import pygame
 
 def import_folder(path):
+    '''Your path should be relative to the support file'''
     surface_list = []
     for _,__,img_files in walk(path):
         for image in img_files:

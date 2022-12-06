@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "topleft"
+    ],
+    "python.analysis.extraPaths": [
+        "./code/world"
     ]
 }

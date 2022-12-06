@@ -1,6 +1,7 @@
-import pygame, sys, os
-sys.path.append(os.path.join(sys.path[0], 'world'))
-sys.path.append(os.path.join(sys.path[0], 'player')) #stops an import error when directly running this file
+import pygame, sys
+from os import path
+sys.path.append(path.join(sys.path[0], 'world'))
+sys.path.append(path.join(sys.path[0], 'player')) #stops an import error when directly running this file
 from settings import *
 from level import Level
 

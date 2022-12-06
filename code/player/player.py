@@ -1,8 +1,8 @@
 import pygame, sys
 from os import path
+sys.path.append(path.join(sys.path[0], '..'))
 from settings import *
 from pygame.locals import *
-sys.path.append(path.join(sys.path[0], 'support'))
 from support import import_folder
 
 
@@ -12,13 +12,18 @@ class Player(pygame.sprite.Sprite):
 
         # init funcs
         super().__init__()
-        self.import_assets()
-
 
         # init vars
-        self.image = pygame.Surface((32,64))
-        self.image.fill('red')
+
+
+        ## animation
+        self.import_assets()
+        self.frame_idx = 0
+        self.animation_speed = 0.15
+        print(self.animations)
+        self.image = self.animations['idle'][self.frame_idx]
         self.rect = self.image.get_rect(topleft = pos)
+        self.animate()
         
 
         ## player movement
@@ -32,14 +37,8 @@ class Player(pygame.sprite.Sprite):
         self.coyote_time = 150
 
 
-    
-    def import_assets(self):
-        character_path = '../graphics/character/'
-        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
-
-        for animation in self.animations.keys():
-            full_path = character_path + animation
-            self.animations[animation] = import_folder(full_path)
+    def animate(self):
+        pass
 
 
     def get_input(self):
@@ -54,6 +53,15 @@ class Player(pygame.sprite.Sprite):
         if keys[K_SPACE] or keys[K_UP]: # Checks if the player is jumping
             if self.direction.y == 0 or self.current_time - self.coyote_jump <= self.coyote_time: 
                 self.jump()
+
+
+    def import_assets(self):
+        character_path = 'graphics/character/'
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
+
+        for animation in self.animations.keys():
+            full_path = character_path + animation
+            self.animations[animation] = import_folder(full_path)
 
     
     def apply_gravity(self):

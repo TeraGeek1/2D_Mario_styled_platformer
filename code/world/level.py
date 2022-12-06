@@ -37,10 +37,10 @@ class Level:
         player_x = player.rect.centerx
         direction_x = player.direction.x
 
-        if player_x < screen_width/4 and direction_x < 0:
+        if player_x < screen_width/2.5 and direction_x < 0:
             self.world_shift = 8
             player.speed = 0
-        elif player_x > screen_width - (screen_width/4) and direction_x > 0:
+        elif player_x > screen_width - (screen_width/2.5) and direction_x > 0:
             self.world_shift = -8
             player.speed = 0
         else:
@@ -63,17 +63,16 @@ class Level:
     
     def vertical_movement_collisions(self):
         player = self.player.sprite
-        player.rect.y += player.direction.y
+        player.apply_gravity()
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0
-                    player.coyote_jump = pygame.time.get_ticks()
-                elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
-                    player.direction.y = 1
+                if player.direction.y > 0: # Bottom player collision
+                    player.rect.bottom = sprite.rect.top # corrects collision
+                    player.direction.y = 0 # Activate coyote timer and allow jumping
+                elif player.direction.y < 0: # Top player collision
+                    player.rect.top = sprite.rect.bottom # corrects collision
+                    player.direction.y = 1 # don't change to 0
                     
 
     

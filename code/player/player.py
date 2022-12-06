@@ -22,6 +22,8 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
+        self.allowed_jumps = 1
+        self.current_jumps = 0
         self.coyote_jump = 0
         self.coyote_time = 150
 
@@ -43,12 +45,17 @@ class Player(pygame.sprite.Sprite):
     
     def apply_gravity(self):
         self.direction.y += self.gravity
+        self.rect.y += self.direction.y
 
 
     def jump(self):
-        self.direction.y = self.jump_speed
+        if not self.current_jumps >= self.allowed_jumps:
+            self.direction.y = self.jump_speed
+            self.current_jumps += 1
 
     def update(self) -> None:
+        if self.direction.y == 0:
+            self.coyote_jump = pygame.time.get_ticks()
+            self.current_jumps = 0
         self.current_time = pygame.time.get_ticks()
         self.get_input()
-        self.apply_gravity()

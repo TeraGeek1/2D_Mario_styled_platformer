@@ -28,4 +28,4 @@ class Game:
 
 
             pygame.display.update() # refresh the screen
-            clock.tick(60) # Sets the games fps to 60
+            clock.tick(FPS) # Sets the games fps to 60

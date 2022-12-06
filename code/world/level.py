@@ -22,18 +22,63 @@ class Level:
 
         for row_idx, row in enumerate(layout): # unpack the level
             for col_idx, cell in enumerate(row):
-                correct_pos = (col_idx*tile_size,row_idx*tile_size)
+                current_pos = (col_idx * tile_size, row_idx * tile_size)
 
                 if cell == 'X': # Adds test tiles
-                    tile = Tile(correct_pos,tile_size)
+                    tile = Tile(current_pos,tile_size)
                     self.tiles.add(tile)
                 
                 if cell == 'P': # Adds a player to the world
-                    self.player.add(Player(correct_pos))
+                    self.player.add(Player(current_pos))
 
+                
+    def scroll_x(self):
+        player = self.player.sprite
+        player_x = player.rect.centerx
+        direction_x = player.direction.x
+
+        if player_x < screen_width/4 and direction_x < 0:
+            self.world_shift = 8
+            player.speed = 0
+        elif player_x > screen_width - (screen_width/4) and direction_x > 0:
+            self.world_shift = -8
+            player.speed = 0
+        else:
+            self.world_shift = 0
+            player.speed = 8
+
+
+    def horizontal_movement_collisions(self):
+        player = self.player.sprite
+        player.rect.x += player.direction.x * player.speed
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+
+                
+    
+    def vertical_movement_collisions(self):
+        player = self.player.sprite
+        player.rect.y += player.direction.y
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                    player.coyote_jump = pygame.time.get_ticks()
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 1
+                    
 
     
     def draw(self, surface = screen): # draws and updates the groups to the screen
+        self.scroll_x()
 
         # tiles
         self.tiles.update(self.world_shift)
@@ -41,4 +86,6 @@ class Level:
 
         # player
         self.player.update()
+        self.horizontal_movement_collisions()
+        self.vertical_movement_collisions()
         self.player.draw(surface)

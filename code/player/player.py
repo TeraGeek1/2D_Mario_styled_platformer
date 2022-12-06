@@ -1,6 +1,9 @@
-import pygame
+import pygame, sys
+from os import path
 from settings import *
 from pygame.locals import *
+sys.path.append(path.join(sys.path[0], 'support'))
+from support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
@@ -9,6 +12,7 @@ class Player(pygame.sprite.Sprite):
 
         # init funcs
         super().__init__()
+        self.import_assets()
 
 
         # init vars
@@ -27,6 +31,15 @@ class Player(pygame.sprite.Sprite):
         self.coyote_jump = 0
         self.coyote_time = 150
 
+
+    
+    def import_assets(self):
+        character_path = '../graphics/character/'
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
+
+        for animation in self.animations.keys():
+            full_path = character_path + animation
+            self.animations[animation] = import_folder(full_path)
 
 
     def get_input(self):

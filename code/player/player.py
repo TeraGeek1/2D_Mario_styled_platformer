@@ -15,12 +15,20 @@ class Player(pygame.sprite.Sprite):
 
         # init vars
 
+        ## player state
+        self.status = 'idle'
+        self.facing_right = True
+        self.on_ground = False
+        self.on_ceiling = False
+        self.on_left = False
+        self.on_right = False
+
 
         ## animation
         self.import_assets()
         self.frame_idx = 0
         self.animation_speed = 0.15
-        self.image = self.animations['idle'][self.frame_idx]
+        self.image = self.animations[self.status][self.frame_idx]
         self.rect = self.image.get_rect(topleft = pos)
         
 
@@ -36,12 +44,15 @@ class Player(pygame.sprite.Sprite):
 
 
     def animate(self):
-        animate = self.animations['idle']
+        self.get_status()
+        animate = self.animations[self.status]
 
         # loop over frame index
         self.frame_idx += self.animation_speed
-        if self.frame_idx > len(animate): self.frame_idx = 0
+        if self.frame_idx >= len(animate): self.frame_idx = 0
         self.image = animate[int(self.frame_idx)]
+        if not self.facing_right:
+            self.image = pygame.transform.flip(self.image,True,False)
         self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
 
 
@@ -50,13 +61,28 @@ class Player(pygame.sprite.Sprite):
 
         if keys[K_d] or keys[K_RIGHT]:
             self.direction.x = 1
+            self.facing_right = True
         elif keys[K_a] or keys[K_LEFT]:
             self.direction.x = -1
+            self.facing_right = False
         else: self.direction.x = 0
 
         if keys[K_SPACE] or keys[K_UP]: # Checks if the player is jumping
             if self.direction.y == 0 or self.current_time - self.coyote_jump <= self.coyote_time: 
                 self.jump()
+
+
+
+    def get_status(self):
+        if self.direction.y < 0:
+            self.status = 'jump'
+        elif self.direction.y > 1:
+            self.status = 'fall'
+        else:
+            if self.direction.x != 0:
+                self.status = 'run'
+            else:
+                self.status = 'idle'
 
 
     def import_assets(self):

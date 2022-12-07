@@ -20,10 +20,8 @@ class Player(pygame.sprite.Sprite):
         self.import_assets()
         self.frame_idx = 0
         self.animation_speed = 0.15
-        print(self.animations)
         self.image = self.animations['idle'][self.frame_idx]
         self.rect = self.image.get_rect(topleft = pos)
-        self.animate()
         
 
         ## player movement
@@ -38,7 +36,13 @@ class Player(pygame.sprite.Sprite):
 
 
     def animate(self):
-        pass
+        animate = self.animations['idle']
+
+        # loop over frame index
+        self.frame_idx += self.animation_speed
+        if self.frame_idx > len(animate): self.frame_idx = 0
+        self.image = animate[int(self.frame_idx)]
+        self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
 
 
     def get_input(self):
@@ -80,3 +84,4 @@ class Player(pygame.sprite.Sprite):
             self.current_jumps = 0
         self.current_time = pygame.time.get_ticks()
         self.get_input()
+        self.animate()

@@ -79,7 +79,7 @@ class Level:
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
         if player.on_ceiling and player.direction.y > 1:
-            player.on_ceiling
+            player.on_ceiling = False
 
                     
 

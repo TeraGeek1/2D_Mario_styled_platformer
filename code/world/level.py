@@ -11,6 +11,7 @@ class Level:
         
         self.setup(level_data) # setup the objects to be placed on the screen
         self.world_shift = 0 # The camera location
+        self.current_x = 0 # player on_left/ on_right
 
 
     def setup(self, layout):
@@ -56,8 +57,17 @@ class Level:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
+                    player.on_left = True
+                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+                    player.on_right = True
+                    self.current_x = player.rect.right
+
+        if player.on_left and (self.current_x > player.rect.left or player.direction.x >= 0):
+            player.on_left = False
+        elif player.on_right and (self.current_x < player.rect.right or player.direction.x <= 0):
+            player.on_right = False
 
                 
     
@@ -73,12 +83,12 @@ class Level:
                     player.on_ground = True
                 elif player.direction.y < 0: # Top player collision
                     player.rect.top = sprite.rect.bottom # corrects collision
-                    player.direction.y = 1 # don't change to 0
+                    player.direction.y = 0
                     player.on_ceiling = True
         
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
-        if player.on_ceiling and player.direction.y > 1:
+        if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
 
                     

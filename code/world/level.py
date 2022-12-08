@@ -11,6 +11,7 @@ class Level:
         
         self.setup(level_data) # setup the objects to be placed on the screen
         self.world_shift = 0 # The camera location
+        self.current_x = 0 # player on_left/ on_right
 
 
     def setup(self, layout):
@@ -56,8 +57,19 @@ class Level:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
+                    player.on_left = True
+                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+                    player.on_right = True
+                    self.current_x = player.rect.right
+
+        if player.on_left and (self.current_x > player.rect.left or player.direction.x >= 0):
+            player.on_left = False
+        elif player.on_right and (self.current_x < player.rect.right or player.direction.x <= 0):
+            player.on_right = False
+
+        print(f'on_left:{player.on_left}, on_right;{player.on_right}')
 
                 
     

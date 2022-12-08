@@ -57,9 +57,20 @@ class Player(pygame.sprite.Sprite):
 
         # set the rect
         if self.on_ground:
-            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+            if self.on_left:
+                self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
+            elif self.on_right:
+                self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
+            else:
+                self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+
         elif self.on_ceiling:
-            self.rect = self.image.get_rect(midtop = self.rect.midtop)
+            if self.on_left:
+                self.rect = self.image.get_rect(topleft = self.rect.topleft)
+            elif self.on_right:
+                self.rect = self.image.get_rect(topright = self.rect.topright)
+            else:
+                self.rect = self.image.get_rect(midtop = self.rect.midtop)
         else:
             self.rect = self.image.get_rect(center = self.rect.center)
 
@@ -82,6 +93,12 @@ class Player(pygame.sprite.Sprite):
 
 
     def get_status(self):
+        # feature status
+        if self.on_ground:
+            self.coyote_jump = pygame.time.get_ticks()
+            self.current_jumps = 0
+
+        # animation status
         if self.direction.y < 0:
             self.status = 'jump'
         elif self.direction.y > 1:
@@ -113,9 +130,6 @@ class Player(pygame.sprite.Sprite):
             self.current_jumps += 1
 
     def update(self) -> None:
-        if self.on_ground:
-            self.coyote_jump = pygame.time.get_ticks()
-            self.current_jumps = 0
         self.current_time = pygame.time.get_ticks()
         self.get_input()
         self.animate()

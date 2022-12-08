@@ -69,8 +69,6 @@ class Level:
         elif player.on_right and (self.current_x < player.rect.right or player.direction.x <= 0):
             player.on_right = False
 
-        print(f'on_left:{player.on_left}, on_right;{player.on_right}')
-
                 
     
     def vertical_movement_collisions(self):

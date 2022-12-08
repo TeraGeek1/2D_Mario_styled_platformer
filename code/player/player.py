@@ -30,6 +30,10 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         self.image = self.animations[self.status][self.frame_idx]
         self.rect = self.image.get_rect(topleft = pos)
+
+
+        ## particles
+        self.import_particles()
         
 
         ## player movement
@@ -91,7 +95,6 @@ class Player(pygame.sprite.Sprite):
                 self.jump()
 
 
-
     def get_status(self):
         # feature status
         if self.on_ground:
@@ -117,6 +120,17 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
+
+
+    
+    def import_particles(self):
+        particle_path = 'graphics/character/dust_particles/'
+        self.dust_particles = {'jump': [], 'land': [], 'run': []}
+
+        for particle in self.dust_particles.keys():
+            full_path = particle_path + particle
+            self.dust_particles[particle] = import_folder(full_path)
+
 
     
     def apply_gravity(self):

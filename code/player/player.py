@@ -76,7 +76,7 @@ class Player(pygame.sprite.Sprite):
         else: self.direction.x = 0
 
         if keys[K_SPACE] or keys[K_UP]: # Checks if the player is jumping
-            if self.direction.y == 0 or self.current_time - self.coyote_jump <= self.coyote_time: 
+            if self.on_ground or self.current_time - self.coyote_jump <= self.coyote_time: 
                 self.jump()
 
 
@@ -113,7 +113,7 @@ class Player(pygame.sprite.Sprite):
             self.current_jumps += 1
 
     def update(self) -> None:
-        if self.direction.y == 0:
+        if self.on_ground:
             self.coyote_jump = pygame.time.get_ticks()
             self.current_jumps = 0
         self.current_time = pygame.time.get_ticks()

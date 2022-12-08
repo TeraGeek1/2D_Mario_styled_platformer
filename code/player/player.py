@@ -53,7 +53,15 @@ class Player(pygame.sprite.Sprite):
         self.image = animate[int(self.frame_idx)]
         if not self.facing_right:
             self.image = pygame.transform.flip(self.image,True,False)
-        self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
+        
+
+        # set the rect
+        if self.on_ground:
+            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+        elif self.on_ceiling:
+            self.rect = self.image.get_rect(midtop = self.rect.midtop)
+        else:
+            self.rect = self.image.get_rect(center = self.rect.center)
 
 
     def get_input(self):

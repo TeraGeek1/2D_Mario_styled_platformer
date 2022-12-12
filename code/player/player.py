@@ -34,6 +34,9 @@ class Player(pygame.sprite.Sprite):
 
         ## particles
         self.import_particles()
+        self.dust_status = None
+        self.dust_frame_idx = 0
+        self.dust_animation_speed = 0.15
         
 
         ## player movement
@@ -94,6 +97,10 @@ class Player(pygame.sprite.Sprite):
             if self.on_ground or self.current_time - self.coyote_jump <= self.coyote_time: 
                 self.jump()
 
+    
+    def particle_animation(self):
+        pass
+
 
     def get_status(self):
         # feature status
@@ -122,7 +129,6 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
 
-    
     def import_particles(self):
         particle_path = 'graphics/character/dust_particles/'
         self.dust_particles = {'jump': [], 'land': [], 'run': []}
@@ -147,3 +153,5 @@ class Player(pygame.sprite.Sprite):
         self.current_time = pygame.time.get_ticks()
         self.get_input()
         self.animate()
+        self.particle_animation()
+        pygame.draw.rect(screen,'red',self.rect)
